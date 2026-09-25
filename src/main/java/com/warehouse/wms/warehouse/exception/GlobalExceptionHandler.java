@@ -13,6 +13,7 @@ import com.warehouse.wms.amr.exception.AMRNotFoundException;
 import com.warehouse.wms.bin.exception.BinNotFoundException;
 import com.warehouse.wms.product.exception.ProductNotFoundException;
 import com.warehouse.wms.inventory.exception.InventoryNotFoundException;
+import com.warehouse.wms.order.exception.OrderNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -72,6 +73,11 @@ public class GlobalExceptionHandler {
                 return ResponseEntity
                                 .status(HttpStatus.BAD_REQUEST)
                                 .body(errors);
+        }
+
+        @ExceptionHandler(OrderNotFoundException.class)
+        public ResponseEntity<String> handleOrderNotFound(OrderNotFoundException ex) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
 
         @ExceptionHandler(IllegalArgumentException.class)

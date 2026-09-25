@@ -17,4 +17,8 @@ public interface OrderService {
     void deleteOrder(Long id);
 
     Order pickOrder(Long id);
+
+    Order checkInventory(Long id);
+
+    Order reserveInventory(Long id);
 }

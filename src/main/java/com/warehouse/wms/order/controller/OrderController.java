@@ -58,4 +58,14 @@ public class OrderController {
     public Order pickOrder(@PathVariable Long id) {
         return orderService.pickOrder(id);
     }
+
+    @PutMapping("/{id}/check-inventory")
+    public Order checkInventory(@PathVariable Long id) {
+        return orderService.checkInventory(id);
+    }
+
+    @PutMapping("/{id}/reserve-inventory")
+    public Order reserveInventory(@PathVariable Long id) {
+        return orderService.reserveInventory(id);
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.warehouse.wms.bin.exception.BinNotFoundException;
 import com.warehouse.wms.product.exception.ProductNotFoundException;
+import com.warehouse.wms.inventory.exception.InventoryNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,6 +39,15 @@ public class GlobalExceptionHandler {
                 return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
 
+        @ExceptionHandler(InventoryNotFoundException.class)
+        public ResponseEntity<String> handleInventoryNotFound(
+                        InventoryNotFoundException exception) {
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(exception.getMessage());
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Map<String, String>> handleValidationErrors(
                         MethodArgumentNotValidException exception) {
@@ -51,5 +61,14 @@ public class GlobalExceptionHandler {
                 return ResponseEntity
                                 .status(HttpStatus.BAD_REQUEST)
                                 .body(errors);
+        }
+
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<String> handleIllegalArgumentException(
+                        IllegalArgumentException exception) {
+
+                return ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .body(exception.getMessage());
         }
 }

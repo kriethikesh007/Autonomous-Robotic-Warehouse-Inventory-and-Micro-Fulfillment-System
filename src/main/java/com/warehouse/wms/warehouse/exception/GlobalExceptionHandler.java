@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.warehouse.wms.bin.exception.BinNotFoundException;
+import com.warehouse.wms.product.exception.ProductNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,6 +30,12 @@ public class GlobalExceptionHandler {
                 return ResponseEntity
                                 .status(HttpStatus.NOT_FOUND)
                                 .body(exception.getMessage());
+        }
+
+        @ExceptionHandler(ProductNotFoundException.class)
+        public ResponseEntity<String> handleProductNotFound(
+                        ProductNotFoundException ex) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
 
         @ExceptionHandler(MethodArgumentNotValidException.class)

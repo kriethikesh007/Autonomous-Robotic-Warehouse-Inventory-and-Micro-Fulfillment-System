@@ -71,7 +71,6 @@ public class OrderServiceImpl implements OrderService {
                         "Order not found with id: " + id));
 
         existingOrder.setOrderNumber(order.getOrderNumber());
-        existingOrder.setStatus(order.getStatus());
 
         return orderRepository.save(existingOrder);
     }
@@ -84,5 +83,21 @@ public class OrderServiceImpl implements OrderService {
                         "Order not found with id: " + id));
 
         orderRepository.delete(existingOrder);
+    }
+
+    @Override
+    public Order pickOrder(Long id) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
+
+        if (order.getStatus() != OrderStatus.CREATED) {
+            throw new IllegalArgumentException(
+                    "Only CREATED orders can be picked");
+        }
+
+        order.setStatus(OrderStatus.PROCESSING);
+
+        return orderRepository.save(order);
     }
 }

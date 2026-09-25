@@ -53,4 +53,9 @@ public class OrderController {
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
     }
+
+    @PutMapping("/{id}/pick")
+    public Order pickOrder(@PathVariable Long id) {
+        return orderService.pickOrder(id);
+    }
 }

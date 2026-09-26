@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.warehouse.wms.amr.exception.AMRNotFoundException;
 import com.warehouse.wms.bin.exception.BinNotFoundException;
+import com.warehouse.wms.budget.exception.BudgetNotFoundException;
 import com.warehouse.wms.product.exception.ProductNotFoundException;
 import com.warehouse.wms.inventory.exception.InventoryNotFoundException;
 import com.warehouse.wms.order.exception.OrderNotFoundException;
@@ -40,7 +41,10 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(ProductNotFoundException.class)
         public ResponseEntity<String> handleProductNotFound(
                         ProductNotFoundException ex) {
-                return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+
+                return new ResponseEntity<>(
+                                ex.getMessage(),
+                                HttpStatus.NOT_FOUND);
         }
 
         @ExceptionHandler(InventoryNotFoundException.class)
@@ -61,6 +65,15 @@ public class GlobalExceptionHandler {
                                 .body(exception.getMessage());
         }
 
+        @ExceptionHandler(BudgetNotFoundException.class)
+        public ResponseEntity<String> handleBudgetNotFound(
+                        BudgetNotFoundException exception) {
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(exception.getMessage());
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Map<String, String>> handleValidationErrors(
                         MethodArgumentNotValidException exception) {
@@ -69,7 +82,9 @@ public class GlobalExceptionHandler {
 
                 exception.getBindingResult()
                                 .getFieldErrors()
-                                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                                .forEach(error -> errors.put(
+                                                error.getField(),
+                                                error.getDefaultMessage()));
 
                 return ResponseEntity
                                 .status(HttpStatus.BAD_REQUEST)
@@ -77,8 +92,12 @@ public class GlobalExceptionHandler {
         }
 
         @ExceptionHandler(OrderNotFoundException.class)
-        public ResponseEntity<String> handleOrderNotFound(OrderNotFoundException ex) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        public ResponseEntity<String> handleOrderNotFound(
+                        OrderNotFoundException ex) {
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(ex.getMessage());
         }
 
         @ExceptionHandler(InvoiceNotFoundException.class)

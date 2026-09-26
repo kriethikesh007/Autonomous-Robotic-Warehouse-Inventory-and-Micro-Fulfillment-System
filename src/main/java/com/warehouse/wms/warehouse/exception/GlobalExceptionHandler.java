@@ -14,6 +14,7 @@ import com.warehouse.wms.bin.exception.BinNotFoundException;
 import com.warehouse.wms.product.exception.ProductNotFoundException;
 import com.warehouse.wms.inventory.exception.InventoryNotFoundException;
 import com.warehouse.wms.order.exception.OrderNotFoundException;
+import com.warehouse.wms.invoice.exception.InvoiceNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -78,6 +79,15 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(OrderNotFoundException.class)
         public ResponseEntity<String> handleOrderNotFound(OrderNotFoundException ex) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+
+        @ExceptionHandler(InvoiceNotFoundException.class)
+        public ResponseEntity<String> handleInvoiceNotFound(
+                        InvoiceNotFoundException exception) {
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(exception.getMessage());
         }
 
         @ExceptionHandler(IllegalArgumentException.class)
